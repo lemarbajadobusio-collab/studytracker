@@ -1,9 +1,11 @@
-
+import Technologies from './pages/Technologies'
+import Roadmap from './pages/Roadmap'
 import { useEffect, useState, type FormEvent } from 'react'
 import type { User } from '@supabase/supabase-js'
 import {
   BookOpen,
   Clock,
+  Code2,
   LayoutDashboard,
   LogOut,
   Plus,
@@ -28,6 +30,7 @@ type StudySession = {
 function App() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [activePage, setActivePage] = useState('dashboard')
   const [sessions, setSessions] = useState<StudySession[]>([])
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [name, setName] = useState('')
@@ -407,9 +410,42 @@ function App() {
           WORKSPACE
         </p>
 
-        <div className="flex items-center gap-3 bg-indigo-50 text-indigo-700 p-3 rounded-xl font-semibold">
-          <LayoutDashboard size={20} />
-          Dashboard
+        <div className="space-y-2">
+          <button
+            onClick={() => setActivePage('dashboard')}
+            className={`w-full flex items-center gap-3 p-3 rounded-xl font-semibold ${
+              activePage === 'dashboard'
+                ? 'bg-indigo-50 text-indigo-700'
+                : 'text-slate-500 hover:bg-slate-50'
+            }`}
+          >
+            <LayoutDashboard size={20} />
+            Dashboard
+          </button>
+
+          <button
+            onClick={() => setActivePage('technologies')}
+            className={`w-full flex items-center gap-3 p-3 rounded-xl font-semibold ${
+              activePage === 'technologies'
+                ? 'bg-indigo-50 text-indigo-700'
+                : 'text-slate-500 hover:bg-slate-50'
+            }`}
+          >
+            <Code2 size={20} />
+            My Technologies
+          </button>
+
+          <button
+            onClick={() => setActivePage('roadmap')}
+            className={`w-full flex items-center gap-3 p-3 rounded-xl font-semibold ${
+              activePage === 'roadmap'
+                ? 'bg-indigo-50 text-indigo-700'
+                : 'text-slate-500 hover:bg-slate-50'
+            }`}
+          >
+            <BookOpen size={20} />
+            Learning Roadmap
+          </button>
         </div>
 
         <div className="mt-auto">
@@ -455,6 +491,8 @@ function App() {
           </button>
         </header>
 
+        {activePage === 'dashboard' ? (
+          <>
         <section className="mb-8">
           <h2 className="text-xl font-bold">
             Welcome back, {displayName}!
@@ -638,6 +676,12 @@ function App() {
         <footer className="text-center text-xs text-slate-400 mt-10">
           StudyTrack © 2026 · Keep learning, keep growing.
         </footer>
+          </>
+        ) : activePage === 'technologies' ? (
+          <Technologies />
+        ) : activePage === 'roadmap' ? (
+          <Roadmap />
+        ) : null}
 
       </main>
     </div>
